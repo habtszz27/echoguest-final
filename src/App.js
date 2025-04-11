@@ -1,23 +1,20 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [message, setMessage] = useState('Loading...');
+
+  useEffect(() => {
+    fetch('https://echoguest-backend.onrender.com/api/health')
+      .then((res) => res.json())
+      .then((data) => setMessage(data.message || 'No message'))
+      .catch((err) => setMessage('Failed to connect to backend'));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Backend Connection Test</h1>
+      <p>{message}</p>
     </div>
   );
 }
